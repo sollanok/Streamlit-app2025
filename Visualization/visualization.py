@@ -17,8 +17,7 @@ import eda
 # Speciesselection
 species = st.multiselect(
     "Select Species",
-    options=eda.penguins['species'].unique(),
-    default=eda.penguins['species'].unique(),
+    options=eda.penguins['species'].unique()
     
 )
 
