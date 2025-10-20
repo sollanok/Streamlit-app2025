@@ -32,6 +32,19 @@ visualization = st.Page(
     icon=":material/help:",
     default=(role == "Requester"),
 )
+maps = st.Page(
+    "Visualization/maps.py",
+    title="Maps",
+    icon=":material/help:",
+    default=(role == "Requester"),
+)
+
+maps2 = st.Page(
+    "Visualization/maps2.py",
+    title="Other maps",
+    icon=":material/help:",
+    default=(role == "Requester"),
+)
 
 
 ml = st.Page(
@@ -47,7 +60,7 @@ eda = st.Page(
     default=(role == "Admin"),
 )
 account_pages = [logout_page, settings]
-visualization_pages = [visualization]
+visualization_pages = [visualization,maps,maps2]
 ml_pages = [ml]
 eda_pages = [eda]
 
