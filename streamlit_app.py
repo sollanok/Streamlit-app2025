@@ -64,7 +64,7 @@ if st.session_state.role in ["Professor", "Team"]:
     page_dict["Machine Learning"] = ml_pages
 
 if len(page_dict) > 0:
-    pg = st.navigation({"Account **": account_pages} | page_dict)
+    pg = st.navigation({"Account": account_pages} | page_dict)
 else:
     pg = st.navigation([st.Page(login)])
 
