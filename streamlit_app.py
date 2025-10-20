@@ -51,7 +51,7 @@ visualization_pages = [visualization]
 ml_pages = [ml]
 eda_pages = [eda]
 
-st.title("Data Analytics ")
+st.title("Data Analytics AI")
 st.logo("images/horizontal_blue.png", icon_image="images/icon_blue.png")
 
 page_dict = {}
