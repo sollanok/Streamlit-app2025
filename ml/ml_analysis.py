@@ -7,6 +7,10 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import classification_report, confusion_matrix
 import sys
 import os
+from utils.theme import theme_css
+
+st.session_state.setdefault("theme_mode", "auto")
+st.markdown(theme_css(st.session_state["theme_mode"]), unsafe_allow_html=True)
 
 # Get the absolute path of the `module1` directory
 eda_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../EDA"))
@@ -15,8 +19,6 @@ sys.path.append(eda_path)
 
 # Now, you can import `eda.py`
 import eda
-
-
 
 st.header("🤖 Machine Learning")
 

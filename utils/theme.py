@@ -1,20 +1,3 @@
-import streamlit as st
-
-# =========================
-# Page + Session bootstrap
-# =========================
-st.set_page_config(page_title="Settings", page_icon="⚙️", layout="centered")
-
-# Example role value if not present
-st.session_state.setdefault("role", "guest")
-
-# "auto" follows OS; "light"/"dark" force those palettes
-st.session_state.setdefault("theme_mode", "auto")  # "auto" | "light" | "dark"
-
-
-# =========================
-# Theming helper (CSS)
-# =========================
 def theme_css(mode: str) -> str:
     """
     Returns a <style> block that:
@@ -24,10 +7,9 @@ def theme_css(mode: str) -> str:
     """
     return f"""
 <style>
-/* ---------- 1) Base tokens (Light defaults) ---------- */
 :root {{
   --bg: #ffffff;
-  --bg-alt: #f6f7fb;   /* sidebar / secondary */
+  --bg-alt: #f6f7fb;
   --fg: #111111;
   --muted: #475569;
   --primary: #3b82f6;
@@ -41,9 +23,7 @@ def theme_css(mode: str) -> str:
   }}
 }}
 
-/* ---------- 2) Conditional palettes ---------- */
 {("""
-/* AUTO: follow OS preference for dark */
 @media (prefers-color-scheme: dark) {
   :root {
     --bg: #3D2A00;
@@ -57,7 +37,6 @@ def theme_css(mode: str) -> str:
 """ if mode == "auto" else "")}
 
 {("""
-/* FORCE LIGHT */
 :root {
   --bg: #F4E7C8;
   --bg-alt: #EAD9B5;
@@ -69,26 +48,20 @@ def theme_css(mode: str) -> str:
 """ if mode == "light" else "")}
 
 {("""
-/* FORCE DARK */
 :root {
   --bg: #3D2A00;
   --bg-alt: #2A1F00;
   --fg: #E6E9EF;
   --muted: #a0a3ad;
-  --primary: #FFD700;  /* Optional: gold accent */
+  --primary: #FFD700;
   --border: #5C3B00;
 }
 """ if mode == "dark" else "")}
 
-/* ---------- 3) Apply tokens to the app ---------- */
-
 /* Main content area */
-[data-testid="stAppViewContainer"] {{
-  background: var(--bg);
-  color: var(--fg);
-}}
+[data-testid="stAppViewContainer"],
 .block-container {{
-  background: var(--bg);
+  background-color: var(--bg);
   color: var(--fg);
 }}
 
@@ -96,19 +69,20 @@ a, .stMarkdown a {{
   color: var(--primary);
 }}
 
-/* Inputs in main area */
 div[data-baseweb="input"] input,
 textarea, .stTextInput input, .stNumberInput input, .stTextArea textarea,
-.css-10trblm, .stSelectbox div[role="combobox"], .stMultiSelect div[role="combobox"] {{
-  background: var(--bg-alt) !important;
+.stSelectbox div[role="combobox"], .stMultiSelect div[role="combobox"] {{
+  background-color: var(--bg-alt) !important;
   color: var(--fg) !important;
   border: 1px solid var(--border) !important;
 }}
 
 .stButton > button, .stDownloadButton > button {{
   background-color: #D5AC4E !important;
-  color: #111111 !important;  /* or white if you prefer contrast */
+  color: #111111 !important;
   border: 1px solid #b88f3f !important;
+  border-radius: 5px;
+  font-weight: bold;
 }}
 
 .stButton > button:hover,
@@ -121,14 +95,13 @@ hr {{
   border-color: var(--border);
 }}
 
-/* ---------- 4) Sidebar (lateral menu) fixes ---------- */
+/* Sidebar styling */
 [data-testid="stSidebar"] {{
-  background: var(--bg-alt);
+  background-color: var(--bg-alt);
   border-right: 1px solid var(--border);
   color: var(--fg);
 }}
 
-/* Inherit readable color for all sidebar descendants */
 [data-testid="stSidebar"] * {{
   color: var(--fg) !important;
 }}
@@ -137,56 +110,32 @@ hr {{
   color: var(--primary) !important;
 }}
 
-/* Sidebar inputs */
 [data-testid="stSidebar"] .stTextInput input,
 [data-testid="stSidebar"] textarea,
 [data-testid="stSidebar"] .stSelectbox div[role="combobox"],
 [data-testid="stSidebar"] .stMultiSelect div[role="combobox"],
 [data-testid="stSidebar"] .stNumberInput input {{
-  background: var(--bg) !important;
+  background-color: var(--bg) !important;
   color: var(--fg) !important;
   border: 1px solid var(--border) !important;
 }}
 
-/* Sidebar buttons */
 [data-testid="stSidebar"] .stButton > button,
 [data-testid="stSidebar"] .stDownloadButton > button {{
   background-color: #D5AC4E !important;
   color: #111111 !important;
   border: 1px solid #b88f3f !important;
+  border-radius: 5px;
+  font-weight: bold;
 }}
 
-/* Radio/checkbox labels readable + highlight selected */
-[data-testid="stSidebar"] label, [data-testid="stSidebar"] [data-testid="stMarkdownContainer"] p {{
+[data-testid="stSidebar"] label,
+[data-testid="stSidebar"] [data-testid="stMarkdownContainer"] p {{
   color: var(--fg) !important;
 }}
+
 [data-testid="stSidebar"] .stRadio [role="radiogroup"] > div[aria-checked="true"] label span {{
   font-weight: 600;
 }}
 </style>
 """
-
-
-# Inject CSS ASAP to avoid flash
-st.markdown(theme_css(st.session_state.theme_mode), unsafe_allow_html=True)
-
-# =========================
-# Main content
-# =========================
-st.header("Settings")
-st.write(f"You are logged in as **{st.session_state.role}**.")
-st.title("⚙️ Settings")
-
-st.subheader("Theme Settings")
-mode = st.radio(
-    "Choose your color theme:",
-    options=["auto", "light", "dark"],
-    format_func=lambda x: {"auto": "Auto (OS preference)", "light": "Light", "dark": "Dark"}[x],
-    index=["auto", "light", "dark"].index(st.session_state.theme_mode),
-    horizontal=True,
-)
-
-if mode != st.session_state.theme_mode:
-    st.session_state.theme_mode = mode
-    st.rerun()  # ✅ triggers re-render with new theme
-    st.success(f"Theme updated to **{mode}** mode.")

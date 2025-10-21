@@ -3,6 +3,10 @@ import streamlit as st
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
+from utils.theme import theme_css
+
+st.session_state.setdefault("theme_mode", "auto")
+st.markdown(theme_css(st.session_state["theme_mode"]), unsafe_allow_html=True)
 
 
 st.header("Exploratory Data Analysis")

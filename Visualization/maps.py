@@ -1,6 +1,10 @@
 import pydeck as pdk
 import streamlit as st
 import pandas as pd
+from utils.theme import theme_css
+
+st.session_state.setdefault("theme_mode", "auto")
+st.markdown(theme_css(st.session_state["theme_mode"]), unsafe_allow_html=True)
 
 df = pd.DataFrame({
     'lat': [19.43, 20.65, 25.68],

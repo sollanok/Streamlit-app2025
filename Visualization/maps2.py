@@ -1,6 +1,10 @@
 import plotly.express as px
 import streamlit as st
 import pandas as pd
+from utils.theme import theme_css
+
+st.session_state.setdefault("theme_mode", "auto")
+st.markdown(theme_css(st.session_state["theme_mode"]), unsafe_allow_html=True)
 
 df = pd.DataFrame({
     'city': ['CDMX', 'GDL', 'MTY'],
