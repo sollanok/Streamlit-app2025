@@ -42,7 +42,7 @@ with st.sidebar:
         st.rerun()
 
 # ---------- CSV upload ----------
-file = 'data/carpetasFGJ_acumulado_2025_01.csv'
+file = 'data/carpetasFGJ_sample.csv'
 
 @st.cache_data(show_spinner=False)
 def load_df(_file, _max_rows):
