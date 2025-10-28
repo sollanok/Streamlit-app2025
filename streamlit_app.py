@@ -10,9 +10,9 @@ if "role" not in st.session_state:
 
 ROLES = [None, "I am from Thales", "I am a Professor", "I am a Student"]
 PASSWORDS = {
-    "I am from Thales": "iamthales",
-    "I am a Professor": "iamprofessor",
-    "I am a Student": "iamstudent"
+    "I am from Thales": "thales",
+    "I am a Professor": "professor",
+    "I am a Student": "student"
 }
 
 def login():
@@ -78,14 +78,22 @@ else:
         icon=":material/person_add:",
         default=(role == "I am from Thales"),
     )
+    chat = st.Page(
+        "ollama/chatview.py",
+        title="Chat with Ollama",
+        icon=":material/chat:"
+        default=(role == "I am a Student"),
+    )
 
     account_pages = [logout_page, settings]
     visualization_pages = [visualization, maps, maps2]
     ml_pages = [ml]
     eda_pages = [eda]
+    chat_pages = [chat]
 
     page_dict = {
     "EDA": eda_pages,
+    "Chat with Ollama": chat_pages,
     "Visualization": visualization_pages,
     "Machine Learning": ml_pages
     }
